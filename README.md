@@ -1,14 +1,14 @@
-#### Metricbeat is a data shipper installed as an agent on your server to send operational metric data to Elasticsearch
+### Metricbeat is a data shipper installed as an agent on your server to send operational metric data to Elasticsearch
 https://www.elastic.co/guide/en/beats/metricbeat/8.4/metricbeat-overview.html
 
-#### Enable the modules that define the basic logic for collecting data from a specific service.
-to load default dashboards and index templates. 
+### Enable the modules that define the basic logic for collecting data from a specific service.
 
 #### Enable and configure the Elasticsearch module
 Load the index templates that control the behavior of your data streams and backing indces.
 - A successfull connection to Elasticsearch will load the default templates.
 - modules.d/elasticsearch.yml configuration
 - hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
+
 
 #### Configure Metricbeat to write to a specific output by setting options in the Outputs section of the metricbeat.yml file.
 - the output host path setting https://my-deployment-158070.es.us-west-1.aws.found.io:443
