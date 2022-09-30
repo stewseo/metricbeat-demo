@@ -1,0 +1,20 @@
+# Module: elasticsearch
+# Docs: https://www.elastic.co/guide/en/beats/metricbeat/8.4/metricbeat-module-elasticsearch.html
+
+- module: elasticsearch
+  xpack.enabled: true
+  metricsets:
+      - stats
+      - node
+      - node_stats
+      - cluster_stats
+      - enrich
+      - index
+      - index_recovery
+      - index_summary
+      - shard
+      - ml_job
+  period: 10s
+  hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
+  username: ${METRICBEAT_SETUP_USERNAME}
+  password: ${METRICBEAT_SETUP_PASSWORD}
