@@ -1,7 +1,7 @@
 ### Load example dashboards, Load index templates, Collect Elasticsearch monitoring logs 
 
-All of the information in this readme references the Elasticsearch 8.4.2 documentation
-https://www.elastic.co/guide/en/beats/metricbeat/8.4/metricbeat-overview.html
+All of the information in this readme references the Elasticsearch 8.4.* documentation
+https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-metricbeat.html
 
 #### Configure Metricbeat to write to a specific output by setting options in the Outputs section of the metricbeat.yml file.
 - Settings for enabled modules in the modules.d directory take precedence over module settings in the Metricbeat configuration file
@@ -22,10 +22,10 @@ https://www.elastic.co/guide/en/beats/metricbeat/8.4/metricbeat-overview.html
     - password
 
 #### if the connection is successful to:
-- output.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
+output.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
 - load default index templates that control the behavior of your data streams and backing indices.
   
-- setup.kibana.host: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"]
+setup.kibana.host: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"]
 - if an index pattern matches the metricbeat index (metricbeat-*)
 - load example dashboards contained in metricbeat-8.4.2-windows-x86_64/*/dashboards to your Kibana instance
   
@@ -55,10 +55,16 @@ https://www.elastic.co/guide/en/beats/metricbeat/8.4/metricbeat-overview.html
 
  
 #### if the connection is successful to:
-- elasticsearch.xpack.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
-- metricsets [ cluster_stats, cluster_rules, stats, node_rules, node_actions ]
-- kibana.xpack.kibana.hosts: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"] 
-- metricsets: ["status", "node_actions", "cluster_rules", "node_actions"]
+elasticsearch.xpack.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
+- https://www.elastic.co/guide/en/beats/metricbeat/8.4/elasticsearch-output.html
+- modify the elasticsearch output setting from default node 
+- modify metricsets [ccr, cluster_stats, enrich, index, index_recovery, index_summary, ml_job, node, node_stats, pending_tasks, shard]
+- submit REST requests from java using service url: https://552e1fdcded8402295b5ff0c5afcc412.us-west-1.aws.found.io
+- test CLI using curl: curl -H "Authorization: ApiKey $ES_API_KEY" https://api.elastic-cloud.com/api/v1/deployments/<deployment id>
+
+
+kibana.xpack.kibana.hosts: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"] 
+- modify metricsets [ cluster_actions, cluster_rules, node_actions, node_rules, settings, stats, status]
 
 Default dashboard for GET/_cat/indices/.monitoring-es-7-2022.09.29
 ![monitoring_logs_indices](https://user-images.githubusercontent.com/54422342/193157962-a43a9eb2-8f48-4971-bb88-749e88319d0c.jpg)
