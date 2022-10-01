@@ -1,10 +1,8 @@
-### Load example dashboards, Load index templates, Collect Elasticsearch monitoring logs 
-
-All of the information in this readme references the Elasticsearch 8.4.* documentation
-https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-metricbeat.html
-
-#### Configure Metricbeat to write to a specific output by setting options in the Outputs section of the metricbeat.yml file.
-- Settings for enabled modules in the modules.d directory take precedence over module settings in the Metricbeat configuration file
+### Collect Elasticsearch and Kibana monitoring data with Metricbeat 
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-metricbeat.html
+- Configure Metricbeat to write to a specific output by setting options in the Outputs section of the metricbeat.yml file.
+- Configure Metricbeat modules Elasticsearch and Kibana. 
+  - Settings for enabled modules in the modules.d directory take precedence over module settings in the Metricbeat configuration file
 
 #### Use Metricbeat modules to specify the Metricbeat configuration.
 - Single cluster, Metricbeat scope: Node
@@ -13,36 +11,37 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-metr
 - modules.d/kibana.yml
 
 ### Configure settings 
-#### for each Metricbeat:
-  - metricbeat.output 
-  #### for each module enabled: 
-    - host.path(s)
-    - metricsets
+- for each Metricbeat set:
+  - the required metricbeat.output.host 
+  - for each module enabled set: 
+    - host(s)
+    - metricset(s)
     - username
     - password
 
 #### if the connection is successful to:
-output.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
-- load default index templates that control the behavior of your data streams and backing indices.
+- output.elasticsearch.hosts: ["https://my-deployment-158070.es.us-west-1.aws.found.io:443"]
+  - load default index templates that control the behavior of your data streams and backing indices.
   
-setup.kibana.host: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"]
-- if an index pattern matches the metricbeat index (metricbeat-*)
-- load example dashboards contained in metricbeat-8.4.2-windows-x86_64/*/dashboards to your Kibana instance
+- setup.kibana.host: ["https://my-deployment-158070.kb.us-west-1.aws.found.io:9243"]
+  - if an index pattern matches the metricbeat index (metricbeat-*)
+    - load example dashboards contained in metricbeat-8.4.2-windows-x86_64/*/dashboards to your Kibana instance
   
-
-### Use Metricbeat modules to specify the Metricbeat configuration to collect Elasticsearch and Kibana monitoring logs
 
 #### verify settings and fields 
-- modules.d/kibana is of type DISABLED FILE and modules.d/kibana.xpack is of type "Yaml Source File"
-- modules.d/elasticsearch is of type DISABLED FILE and modules.d/elastichsearch.xpack is of type "Yaml Source File"- roles for metricbeat_monitor and metricbeat_publisher 
-
+- modules.d/kibana is of type DISABLED FILE 
+- modules.d/kibana.xpack is of type "Yaml Source File"
+- modules.d/elasticsearch is of type DISABLED FILE
+- modules.d/elastichsearch.xpack is of type "Yaml Source File"
+- roles for metricbeat_monitor and metricbeat_publisher 
 - the collection of monitoring data is enabled using _cluster/settings returns "xpack.monitoring.collection.enabled": "true"
-
 - the index templates that are used to configure the indices that store the monitoring data collected from a cluster.
-- index templates using /_template/<index-template> custom_monitoring returns "index_patterns": [".monitoring-beats-7-*", ".monitoring-es-7-*", ".monitoring-kibana-7-*", ".monitoring-logstash-7-*"]
-
-- role privleges using /_security/roles/<name> metricbeat_monitor and metricbeat_publish returns "create_doc", "create_index" on indices : monitoring-*
-- user roles using /_security/user/<username> metricbeat_monitor_all returns roles [metricbeat_monitor, metricbeat_publisher, monitor] 
+  - request /<api path>/<index-template>: /_template/custom_monitoring 
+    - should return: "index_patterns" : [".monitoring-beats-7-*", ".monitoring-es-7-*", ".monitoring-kibana-7-*", ".monitoring-logstash-7-*"]
+- request /_security/roles/<name>: metricbeat_monitor and metricbeat_publish
+  - should return "create_doc", "create_index" on indices : monitoring-*
+- request /_security/user/<username>: metricbeat_monitor_all 
+  - should return roles: [metricbeat_monitor, metricbeat_publisher, monitor] 
 
 ### Configure settings 
 #### for each Metricbeat:
